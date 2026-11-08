@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Page Header -->
+    <h1>Student Management System</h1>
+    <p>Manage your students easily</p>
+
+
+    <!-- Dashboard Statistics -->
+    <div class="form-box">
+        <h2>Dashboard Statistics</h2>
+
+        <h3>
+            Total Students:
+            <span>{{ total_students }}</span>
+        </h3>
+    </div>
+
+
+    <!-- Add Student -->
+    <div class="form-box">
+
+        <h2>Add New Student</h2>
+
+        <form action="/add" method="POST">
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Student Name"
+                required
+            >
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                required
+            >
+
+            <input
+                type="text"
+                name="major"
+                placeholder="Major"
+                required
+            >
+
+            <button type="submit">
+                Add Student
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- Search Students -->
+    <div class="form-box">
+
+        <h2>Search Students</h2>
+
+        <form action="/" method="GET">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search by name, email or major"
+                value="{{ search }}"
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+            <a href="/" style="margin-left: 15px;">
+                Clear Search
+            </a>
+
+        </form>
+
+    </div>
+
+
+    <!-- Students List -->
+    <div class="students-box">
+
+        <h2>Students List</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Major</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for student in students %}
+
+                <tr>
+
+                    <td>{{ student.id }}</td>
+
+                    <td>{{ student.name }}</td>
+
+                    <td>{{ student.email }}</td>
+
+                    <td>{{ student.major }}</td>
+
+                    <td>
+
+                        <!-- Edit Button -->
+                        <a href="{{ url_for('edit_student', id=student.id) }}">
+                            Edit
+                        </a>
+
+                        <!-- Delete Button -->
+                        <form
+                            action="{{ url_for('delete_student', id=student.id) }}"
+                            method="POST"
+                            style="display:inline;"
+                        >
+
+                            <button type="submit">
+                                Delete
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+                    <td colspan="5">
+                        No students found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>
